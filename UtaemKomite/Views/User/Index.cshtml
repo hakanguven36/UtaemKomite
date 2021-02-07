@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Benim Sayfam</h4>
+<br />
+<h5><u>Projelerim</u> <button class="btn btn-sm btn-outline-primary" onclick="YeniProjeEkle()">+Yeni</button></h5>
+<div class="row">
+    <div class="col-sm" id="projelerimDiv"></div>
+    <div class="col-sm" id="tutanaklarDiv"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        ProjelerimListele();
+    });
+
+    function ProjelerimListele() {
+        new OzAjax("/User/ProjelerimListele", GET, null, projelerimListeleBasari).BasitGonder();
+        function projelerimListeleBasari(data) {
+            $("#projelerimDiv").html(data);
+        }
+    }
+
+    function YeniProjeEkle() {
+        new OzAjax("/User/YeniProjeEkle", GET, null, yeniProjeEkleFormBasari).BasitGonder();
+        function yeniProjeEkleFormBasari(data) {
+            new OzModal().Sayfa(data, "Yeni Proje");
+        }
+    }
+
+    function ProjeDuzenle(id) {
+        new OzAjax("/User/ProjeDüzenle", GET, { id: id }, projeDuzenleFormBasari).BasitGonder();
+        function projeDuzenleFormBasari(data) {
+            new OzModal().Sayfa(data, "Proje Düzenle");
+        }
+    }
+
+</script>
+
+

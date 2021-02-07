@@ -1,0 +1,33 @@
+﻿@model IEnumerable<UtaemKomite.Models.Proje>
+
+@if (Model.FirstOrDefault() == null)
+{
+    <div>
+        <i>Hiç projeniz yok.. "Yeni"ye basarak ekleyebilirsiniz.</i>
+    </div>
+}
+
+@foreach (var item in Model)
+{
+    <div class="projePanel">
+        <h6>@item.isim</h6>
+        <div class="row">
+            <div class="col-sm-10">
+                Yükleme Tarihi: @item.tarih
+                <br />
+                Proje Türü: @item.durum
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-secondary"><span class="fas fa-arrow-right"></span><br />Gör</button>
+            </div>
+        </div>
+        
+        <button class="btn btn-sm btn-outline-warning" onclick="ProjeDuzenle(@item.ID)">Düzenle</button>
+        <hr />
+        <h6>Dosyalar</h6>
+        <button>bu bir dosya</button><br />
+        <i><u>Önceki Versiyonlar</u></i>
+
+    </div> 
+}
+

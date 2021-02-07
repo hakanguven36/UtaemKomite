@@ -1,0 +1,27 @@
+﻿
+    <div class="row">
+        <div class="col" id="toplantiListDiv"><center><div class="h1 dot-bricks"></div><br /><h5><i> Yükleniyor </i></h5></center></div>
+        <div class="col" id="projeListDiv"><center><div class="h1 dot-bricks"></div><br /><h5><i> Yükleniyor </i></h5></center></div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        ListeleToplanti();
+        ListeleProje();
+    });
+
+    function ListeleToplanti() {
+        new OzAjax("/Home/ToplantıListele", GET, null, listeleToplantiBasari).BasitGonder();
+        function listeleToplantiBasari(data) {
+            $("#toplantiListDiv").html(data);
+        }
+    }
+
+    function ListeleProje() {
+        new OzAjax("/Home/ProjeListele", GET, null, listeleProjeBasari).BasitGonder();
+        function listeleProjeBasari(data) {
+            $("#projeListDiv").html(data);
+        }
+    }
+
+</script>
