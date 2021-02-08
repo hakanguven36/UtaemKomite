@@ -1,0 +1,28 @@
+﻿@model UtaemKomite.Models.Prodosya
+@{ 
+    var projeID = ViewBag.prodosyaEklenecekProjeID;
+}
+
+<form id="prodosyaEkleForm" enctype="multipart/form-data">
+    <input name="projeID" id="projeIDsi" value="@projeID" />
+    <input type="file" id="budosya" required accept=".pdf,.doc,.docx"/>
+    <input type="submit" class="btn btn-success" value="EKLE" />
+</form>
+
+<script>
+    $("#prodosyaEkleForm").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData();
+        var file = document.getElementById("budosya").files[0];
+        formData.append("dosya", file);
+        var projeID = Number($("#projeIDsi").val());
+        formData.append("projeID", projeID);
+
+        new OzAjax("/User/DosyaEkle", POST, formData, dosyaEkleBasari).MultiGonder();
+        function dosyaEkleBasari(data) {
+            new OzModal().Bilgi(data, 1200);
+            ProdosyaListele();
+        }
+
+    });
+</script>

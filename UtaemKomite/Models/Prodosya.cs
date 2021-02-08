@@ -18,6 +18,7 @@ namespace UtaemKomite.Models
 		public int projeID { get; set; }
 
 		[NotMapped]
+		[Required, FileExtensions(Extensions =".pdf,.doc,.docx", ErrorMessage ="Dosya uygun değil!!")]
 		public IFormFile dosya { get; set; }
 
 		public int versiyon { get; set; }

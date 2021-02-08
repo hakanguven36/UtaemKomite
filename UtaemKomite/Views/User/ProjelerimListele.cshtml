@@ -9,6 +9,7 @@
 
 @foreach (var item in Model)
 {
+    <input type="hidden" id="projeID" value="@item.ID" />
     <div class="projePanel">
         <h6>@item.isim</h6>
         <div class="row">
@@ -24,10 +25,27 @@
         
         <button class="btn btn-sm btn-outline-warning" onclick="ProjeDuzenle(@item.ID)">Düzenle</button>
         <hr />
-        <h6>Dosyalar</h6>
-        <button>bu bir dosya</button><br />
-        <i><u>Önceki Versiyonlar</u></i>
-
+        <div id="prodosyalarDiv">
+            <b><u>Dosyalar</u></b>
+            <center><span class="dot-bricks"></span></center>
+        </div>
     </div> 
 }
+
+<script>
+    $(document).ready(function () {
+        ProdosyaListele();
+    });
+
+    function ProdosyaListele() {
+        var projeID = Number($("#projeID").val());
+        new OzAjax("/User/DosyalarımListele", GET, { projeID: projeID }, prodosyaGetirBasari).BasitGonder();
+        function prodosyaGetirBasari(data) {
+            $("#prodosyalarDiv").html(data);
+        }
+    }
+
+
+</script>
+
 
