@@ -86,9 +86,33 @@ body {
 
 .projePanel{
     background-color:antiquewhite;
-    margin-right:1em;
-    margin-bottom:1em;
+    margin-right:2em;
+    margin-bottom:2em;
     
-    padding:1em;
-    border-radius:1em;
+    padding:1px;
+    border-radius:8px;
+}
+
+.miniBilgi {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.miniBilgi .miniBilgiText {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1000;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.miniBilgi:hover .miniBilgiText {
+    visibility: visible;
 }

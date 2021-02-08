@@ -11,25 +11,43 @@
 {
     <input type="hidden" id="projeID" value="@item.ID" />
     <div class="projePanel">
-        <h6>@item.isim</h6>
-        <div class="row">
-            <div class="col-sm-10">
-                Yükleme Tarihi: @item.tarih
-                <br />
+        <table class="table table-active">
+            <tr>
+                <td>
+                    <b>@item.isim</b>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="ProjeDuzenle(@item.ID)">Düzenle</button>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="row" style="margin-top:1em">
+            <div class="col-sm-1"  style="margin-top:2em">
+                <h5 style="transform:rotate(-90deg)">Ayrıntı</h5>
+            </div>
+            <div class="col-sm-3">
+                Yükleme: @item.tarih.ToShortDateString() <br />
                 Proje Türü: @item.durum
             </div>
-            <div class="col-sm-2">
-                <button class="btn btn-secondary"><span class="fas fa-arrow-right"></span><br />Gör</button>
+            <div class="col-sm-1" style="margin-top:2em">
+                <h5 style="transform:rotate(-90deg)">Dosya</h5>
+            </div>
+            <div class="col-sm-4">
+                <div id="prodosyalarDiv">
+                    <span class="dot-bricks"></span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-secondary"><span class="fas fa-arrow-right"></span><br />Tutanaklar</button>
             </div>
         </div>
-        
-        <button class="btn btn-sm btn-outline-warning" onclick="ProjeDuzenle(@item.ID)">Düzenle</button>
-        <hr />
-        <div id="prodosyalarDiv">
-            <b><u>Dosyalar</u></b>
-            <center><span class="dot-bricks"></span></center>
-        </div>
-    </div> 
+      
+        <button class="btn btn-sm btn-primary" onclick="ProdosyaEkleFormAc('@item.ID')">
+            <span class="fas fa-plus"></span> Dosya Ekle
+        </button>
+        <button href="#" onclick="OncekiVersiyonlar('@item.ID')"><i>(Eski Dosyalar)</i></button>
+    </div>
 }
 
 <script>
@@ -39,12 +57,23 @@
 
     function ProdosyaListele() {
         var projeID = Number($("#projeID").val());
-        new OzAjax("/User/DosyalarımListele", GET, { projeID: projeID }, prodosyaGetirBasari).BasitGonder();
+        new OzAjax("/User/DosyaGöster", GET, { projeID: projeID }, prodosyaGetirBasari).BasitGonder();
         function prodosyaGetirBasari(data) {
             $("#prodosyalarDiv").html(data);
         }
     }
 
+    function ProdosyaEkleFormAc(projeID) {
+        projeID = Number(projeID);
+        new OzAjax("/User/DosyaEkle", GET, { projeID: projeID }, prodosyaEkleFormBasari).BasitGonder();
+        function prodosyaEkleFormBasari(data) {
+            new OzModal().Sayfa(data, "Dosya Ekle");
+        }
+    }
+
+    function OncekiVersiyonlar(projeID) {
+
+    }
 
 </script>
 

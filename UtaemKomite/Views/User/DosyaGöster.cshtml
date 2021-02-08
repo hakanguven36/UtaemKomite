@@ -1,0 +1,39 @@
+﻿@model UtaemKomite.Models.Prodosya
+
+<div class="miniBilgi" onmouseover="AyrintiGoster('@Model.orjisim','@Model.tarih', '@Model.bytenumber', '@Model.downloads')">
+    <center>
+        <table>
+            <tr>
+                <td>
+                    @if (Model.orjuzantı == ".pdf")
+                    {
+                        <img style="cursor:pointer" height="30" src="~/resim/pdflogo.png" onclick="DosyaIndir(@Model.ID)" />
+                    }
+                    else
+                    {
+                        <img style="cursor:pointer" height="30" src="~/resim/wordlogo.png" />
+                    }
+                </td>
+                <td>
+                    @Model.orjisim.Substring(0, 14)...<br />
+                    V-@Model.versiyon
+                </td>
+            </tr>
+        </table>
+        <span class="miniBilgiText">miniBilgiText</span><br />
+    </center>
+</div>         
+
+
+<script>
+
+    function AyrintiGoster(proDosyaAdi, proDosyaTarih, proDosyabyte, proDosyaDownloads) {
+        var dosyaAyrintilari = proDosyaAdi + '<hr style="border-color:white" />' +
+            "("+proDosyaTarih + ")<br/ >" +
+            Number(proDosyabyte/1024).toFixed() + " (kb)<br/ >" +
+            "indirme: " + proDosyaDownloads + "<br/ >";
+
+        $(".miniBilgiText").html(dosyaAyrintilari);
+    }
+
+</script>

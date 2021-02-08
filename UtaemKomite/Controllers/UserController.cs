@@ -88,13 +88,13 @@ namespace UtaemKomite.Controllers
 			}
 		}
 
-		public IActionResult DosyalarımListele(int projeID)
+		public IActionResult DosyaGöster(int projeID)
 		{
 			try
 			{
 				int kulID = KulID();
-				var dosyalar = db.Prodosya.Where(u => u.kulID == kulID).Where(u => u.projeID == projeID).OrderByDescending(u => u.ID).ToList();
-				return PartialView(dosyalar);
+				var dosya = db.Prodosya.Where(u => u.kulID == kulID).Where(u => u.projeID == projeID).OrderByDescending(u => u.ID).FirstOrDefault();
+				return PartialView(dosya);
 			}
 			catch (Exception e)
 			{
@@ -117,35 +117,41 @@ namespace UtaemKomite.Controllers
 		{
 			try
 			{
-				
-				int versiyon = db.Prodosya.Where(u => u.projeID == projeID).Max(u => u.versiyon) + 1;
-					Prodosya prodosya = new Prodosya();
-					prodosya.orjisim = Path.GetFileNameWithoutExtension(dosya.FileName);
-					prodosya.orjuzantı = Path.GetExtension(dosya.FileName);
-					prodosya.bytenumber = Convert.ToInt32(dosya.Length);
-					prodosya.kulID = KulID();
-					prodosya.tarih = DateTime.Now;
-					prodosya.sysname = Arac.RandomString(8);
-					prodosya.versiyon = versiyon;
+				var prodosyaList = db.Prodosya.Where(u => u.projeID == projeID).ToList();
+				int versiyon = 1;
+				if(prodosyaList.FirstOrDefault() != null)
+				{
+					versiyon = prodosyaList.Max(u => u.versiyon) + 1;
+				}
+				Prodosya prodosya = new Prodosya();
+				prodosya.projeID = projeID;
+				prodosya.orjisim = Path.GetFileNameWithoutExtension(dosya.FileName);
+				prodosya.orjuzantı = Path.GetExtension(dosya.FileName);
+				prodosya.bytenumber = Convert.ToInt32(dosya.Length);
+				prodosya.kulID = KulID();
+				prodosya.tarih = DateTime.Now;
+				prodosya.sysname = Arac.RandomString(8);
+				prodosya.versiyon = versiyon;
 
-					string path = Path.Combine(uploadsRoot, prodosya.sysname);
-					using (var filestream = new FileStream(path, FileMode.Create))
-					{
-						dosya.CopyTo(filestream);
-					}
+				string path = Path.Combine(uploadsRoot, prodosya.sysname);
+				using (var filestream = new FileStream(path, FileMode.Create))
+				{
+					dosya.CopyTo(filestream);
+				}
 
-					// database kaydet
-					db.Add(prodosya);
-					db.SaveChanges();
-					return Tamam();
-					
-				return Json("Hata: ModelState valid değildi!");
+				db.Add(prodosya);
+				db.SaveChanges();
+				return Tamam();
 			}
 			catch (Exception e)
 			{
 				return Hata(e);
 			}
-			
+		}
+
+		public IActionResult DosyaIndir(int prodosyaID)
+		{
+			return Json("eyvallah");
 		}
 
 		private JsonResult Tamam() => Json("Tamam");
